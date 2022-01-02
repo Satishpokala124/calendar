@@ -1,3 +1,6 @@
+from copy import copy
+
+
 class Date:
     def __init__(self, day: int, month: int, year: int):
         self.d: int = 0
@@ -33,7 +36,19 @@ class Date:
     def __le__(self, other) -> bool:
         return self<other and self==other
 
-    def __add__(self, days) -> None:
+    def __add__(self, days: int):
+        newDay = copy(self)
+        while newDay.d + days > newDay.maxDays():
+            days -= (newDay.maxDays() - newDay.d)
+            newDay.d = 0
+            newDay.m = newDay.getNextMonth()
+            if newDay.m == 1:
+                newDay.y += 1
+        newDay.d += days
+        return newDay
+
+    def __sub__(self, other):
+        # "other" can be a Date object or an integer.
         pass
 
     def isLeapYear(self) -> bool:
@@ -46,13 +61,16 @@ class Date:
         days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
         if self.isLeapYear():
             days[1] = 29
-        return days[self.m-1]
+        return days[self.m - 1]
 
     def getDay(self) -> int:
         return self.d
 
     def getMonth(self) -> int:
         return self.m
+
+    def getNextMonth(self) -> int:
+        return self.m + 1 if self.m <= 12 else 1
 
     def getYear(self) -> int:
         return self.y
@@ -89,3 +107,12 @@ if __name__ == '__main__':
     print(f'16: 1-2-2000 > 1-1-2000 : {Date(1, 2, 2000) > Date(1, 1, 2000)}')
     print(f'17: 1-1-2000 > 1-2-2000 : {Date(1, 1, 2000) > Date(1, 2, 2000)}')
     print(f'18: 2-1-2000 > 1-1-2000 : {Date(2, 1, 2000) > Date(1, 1, 2000)}')
+    d1 = Date(1, 2, 2000)
+    print(d1.isLeapYear())
+    print(d1.maxDays())
+    print(d1 + 10)
+    print(d1 + 20)
+    print(d1 + 30)
+    print(d1 + 40)
+    print(d1 + 50)
+    print(d1 + 60)
