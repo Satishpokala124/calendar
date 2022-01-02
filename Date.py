@@ -28,28 +28,38 @@ class Date:
         return False
 
     def __ge__(self, other) -> bool:
-        return self>other and self==other
+        return self > other or self == other
 
     def __lt__(self, other) -> bool:
-        return not self>=other
+        return not self >= other
 
     def __le__(self, other) -> bool:
-        return self<other and self==other
+        return self < other or self == other
 
     def __add__(self, days: int):
-        newDay = copy(self)
-        while newDay.d + days > newDay.maxDays():
-            days -= (newDay.maxDays() - newDay.d)
-            newDay.d = 0
-            newDay.m = newDay.getNextMonth()
-            if newDay.m == 1:
-                newDay.y += 1
-        newDay.d += days
-        return newDay
+        new_date = copy(self)
+        while new_date.d + days > new_date.maxDays():
+            days -= (new_date.maxDays() - new_date.d)
+            new_date.d = 0
+            new_date.m = new_date.getNextMonth()
+            new_date.y += 1 if new_date.m == 1 else 0
+        new_date.d += days
+        return new_date
 
     def __sub__(self, other):
-        # "other" can be a Date object or an integer.
-        pass
+        if isinstance(other, int):
+            new_date = copy(self)
+            while new_date.d - other < 1:
+                other -= new_date.d
+                new_date.m = new_date.previousMonth()
+                new_date.y -= 1 if new_date.m == 12 else 0
+                new_date.d = new_date.maxDays()
+            new_date.d -= other
+            return new_date
+        elif isinstance(other, Date):
+            return 1
+        else:
+            return TypeError
 
     def isLeapYear(self) -> bool:
         year = self.y
@@ -70,7 +80,7 @@ class Date:
         return self.m
 
     def getNextMonth(self) -> int:
-        return self.m + 1 if self.m <= 12 else 1
+        return self.m + 1 if self.m < 12 else 1
 
     def getYear(self) -> int:
         return self.y
@@ -85,6 +95,9 @@ class Date:
 
     def setYear(self, year: int) -> None:
         self.y = year
+
+    def previousMonth(self):
+        return 12 if self.m == 1 else self.m
 
 
 if __name__ == '__main__':
