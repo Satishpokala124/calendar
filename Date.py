@@ -25,40 +25,20 @@ class Date:
         return False
 
     def __ge__(self, other) -> bool:
-        if self.y < self.y:
-            return False
-        elif self.m < other.m:
-            return False
-        elif self.d < self.d:
-            return False
-        return True
+        return self>other and self==other
 
     def __lt__(self, other) -> bool:
-        if self.y < other.y:
-            return True
-        elif self.y == other.y:
-            if self.m < other.m:
-                return True
-            elif self.m == other.m:
-                if self.d < other.d:
-                    return True
-        return False
+        return not self>=other
 
     def __le__(self, other) -> bool:
-        if self.y > other.y:
-            return False
-        elif self.m > other.m:
-            return False
-        elif self.d > other.d:
-            return False
-        return True
+        return self<other and self==other
 
     def __add__(self, days) -> None:
         pass
 
     def isLeapYear(self) -> bool:
         year = self.y
-        if (not year % 4 and year % 100) or (not year % 400):
+        if (not (year % 4) and year % 100) or (not (year % 400)):
             return True
         return False
 
@@ -79,7 +59,7 @@ class Date:
 
     def setDay(self, day: int) -> None:
         if 0 < day <= self.maxDays():
-            self.m = day
+            self.d = day
 
     def setMonth(self, month: int) -> None:
         if 0 < month <= 12:
