@@ -6,7 +6,9 @@ class Date:
         self.d: int = 0
         self.m: int = 0
         self.y: int = 0
+        self.month_days = None
         self.setYear(year)
+        self.setMonthDays()
         self.setMonth(month)
         self.setDay(day)
 
@@ -38,8 +40,8 @@ class Date:
 
     def __add__(self, days: int):
         new_date = copy(self)
-        while new_date.d + days > new_date.maxDays():
-            days -= (new_date.maxDays() - new_date.d)
+        while new_date.d + days > new_date.maxDaysInThisMonth():
+            days -= (new_date.maxDaysInThisMonth() - new_date.d)
             new_date.d = 0
             new_date.m = new_date.getNextMonth()
             new_date.y += 1 if new_date.m == 1 else 0
@@ -53,11 +55,17 @@ class Date:
                 other -= new_date.d
                 new_date.m = new_date.previousMonth()
                 new_date.y -= 1 if new_date.m == 12 else 0
-                new_date.d = new_date.maxDays()
+                new_date.d = new_date.maxDaysInThisMonth()
             new_date.d -= other
             return new_date
         elif isinstance(other, Date):
-            return 1
+            smaller_day, bigger_day = [self, other] if self < other else [other, self]
+            if self.y == other.y:
+                return bigger_day.numberOfDaysFromYearStart() - smaller_day.numberOfDaysFromYearStart()
+            days_remaining_in_the_year_of_smaller_day = smaller_day.numberOfDaysRemainingInThisYear()
+            days_from_year_start_bigger_day = bigger_day.numberOfDaysFromYearStart()
+            days_between_years = sum([Date(1, 1, i) for i in range(smaller_day.y+1, bigger_day.y)])
+            return days_remaining_in_the_year_of_smaller_day + days_between_years + days_from_year_start_bigger_day
         else:
             return TypeError
 
@@ -67,11 +75,8 @@ class Date:
             return True
         return False
 
-    def maxDays(self) -> int:
-        days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-        if self.isLeapYear():
-            days[1] = 29
-        return days[self.m - 1]
+    def maxDaysInThisMonth(self) -> int:
+        return self.month_days[self.m - 1]
 
     def getDay(self) -> int:
         return self.d
@@ -86,7 +91,7 @@ class Date:
         return self.y
 
     def setDay(self, day: int) -> None:
-        if 0 < day <= self.maxDays():
+        if 0 < day <= self.maxDaysInThisMonth():
             self.d = day
 
     def setMonth(self, month: int) -> None:
@@ -96,8 +101,25 @@ class Date:
     def setYear(self, year: int) -> None:
         self.y = year
 
+    def setMonthDays(self):
+        self.month_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        if self.isLeapYear():
+            self.month_days[1] = 29
+
     def previousMonth(self):
         return 12 if self.m == 1 else self.m
+
+    def firstDayOfTheYear(self):
+        return Date(1, 1, self.y)
+
+    def numberOfDaysFromYearStart(self) -> int:
+        return sum(self.month_days[:self.m-1]) + self.d
+
+    def numberOfDaysInThisYear(self):
+        return 366 if self.isLeapYear() else 365
+
+    def numberOfDaysRemainingInThisYear(self):
+        return self.numberOfDaysInThisYear() - self.numberOfDaysFromYearStart()
 
 
 if __name__ == '__main__':
@@ -121,11 +143,17 @@ if __name__ == '__main__':
     print(f'17: 1-1-2000 > 1-2-2000 : {Date(1, 1, 2000) > Date(1, 2, 2000)}')
     print(f'18: 2-1-2000 > 1-1-2000 : {Date(2, 1, 2000) > Date(1, 1, 2000)}')
     d1 = Date(1, 2, 2000)
-    print(d1.isLeapYear())
-    print(d1.maxDays())
     print(d1 + 10)
     print(d1 + 20)
     print(d1 + 30)
     print(d1 + 40)
     print(d1 + 50)
     print(d1 + 60)
+    d2 = Date(28, 1, 2000)
+    d3 = Date(1, 2, 2000)
+    d4 = Date(1, 1, 2001)
+    print(d2.isLeapYear())
+    print(d1.maxDaysInThisMonth())
+    print(d2 - d1)
+    print(d3 - d1)
+    print(d4 - d1)
