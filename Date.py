@@ -44,7 +44,7 @@ class Date:
             days -= (new_date.maxDaysInThisMonth() - new_date.d)
             new_date.d = 0
             new_date.m = new_date.getNextMonth()
-            new_date.y += 1 if new_date.m == 1 else 0
+            new_date.y += (1 if new_date.m == 1 else 0)
         new_date.d += days
         return new_date
 
@@ -64,7 +64,7 @@ class Date:
                 return bigger_day.numberOfDaysFromYearStart() - smaller_day.numberOfDaysFromYearStart()
             days_remaining_in_the_year_of_smaller_day = smaller_day.numberOfDaysRemainingInThisYear()
             days_from_year_start_bigger_day = bigger_day.numberOfDaysFromYearStart()
-            days_between_years = sum([Date(1, 1, i) for i in range(smaller_day.y+1, bigger_day.y)])
+            days_between_years = sum([Date(1, 1, i).numberOfDaysInThisYear() for i in range(smaller_day.y+1, bigger_day.y)])
             return days_remaining_in_the_year_of_smaller_day + days_between_years + days_from_year_start_bigger_day
         else:
             return TypeError
@@ -90,13 +90,19 @@ class Date:
     def getYear(self) -> int:
         return self.y
 
-    def setDay(self, day: int) -> None:
+    def setDay(self, day: int) :
         if 0 < day <= self.maxDaysInThisMonth():
             self.d = day
+        else:
+            print("Invalid Day :", day)
+            return RuntimeError
 
-    def setMonth(self, month: int) -> None:
+    def setMonth(self, month: int):
         if 0 < month <= 12:
             self.m = month
+        else:
+            print("Invalid Month :", month)
+            return RuntimeError
 
     def setYear(self, year: int) -> None:
         self.y = year
@@ -107,7 +113,7 @@ class Date:
             self.month_days[1] = 29
 
     def previousMonth(self):
-        return 12 if self.m == 1 else self.m
+        return 12 if self.m == 1 else self.m - 1
 
     def firstDayOfTheYear(self):
         return Date(1, 1, self.y)
