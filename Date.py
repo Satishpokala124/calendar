@@ -44,7 +44,7 @@ class Date:
             days -= (new_date.maxDaysInThisMonth() - new_date.d)
             new_date.d = 0
             new_date.m = new_date.getNextMonth()
-            new_date.y += (1 if new_date.m == 1 else 0)
+            new_date.y += 1 if new_date.m == 1 else 0
         new_date.d += days
         return new_date
 
