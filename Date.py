@@ -2,10 +2,10 @@ from copy import copy
 
 
 class Date:
+    d: int = 0
+    m: int = 0
+    y: int = 0
     def __init__(self, day: int, month: int, year: int):
-        self.d: int = 0
-        self.m: int = 0
-        self.y: int = 0
         self.month_days = None
         self.setYear(year)
         self.setMonthDays()
@@ -13,12 +13,19 @@ class Date:
         self.setDay(day)
 
     def __str__(self) -> str:
-        return f'{self.d}-{self.m}-{self.y}'
+        d = str(self.d).rjust(2, '0')
+        m = str(self.m).rjust(2, '0')
+        y = str(self.y).rjust(4, '0')
+        return f'{d}-{m}-{y}'
 
     def __eq__(self, other) -> bool:
+        if not isinstance(other, Date):
+            raise TypeError
         return self.d == other.d and self.m == other.m and self.y == other.y
 
     def __gt__(self, other) -> bool:
+        if not isinstance(other, Date):
+            raise TypeError
         if self.y > other.y:
             return True
         elif self.y == other.y:
@@ -30,15 +37,23 @@ class Date:
         return False
 
     def __ge__(self, other) -> bool:
+        if not isinstance(other, Date):
+            raise TypeError
         return self > other or self == other
 
     def __lt__(self, other) -> bool:
+        if not isinstance(other, Date):
+            raise TypeError
         return not self >= other
 
     def __le__(self, other) -> bool:
+        if not isinstance(other, Date):
+            raise TypeError
         return self < other or self == other
 
     def __add__(self, days: int):
+        if not isinstance(days, int):
+            raise TypeError
         new_date = copy(self)
         while new_date.d + days > new_date.maxDaysInThisMonth():
             days -= (new_date.maxDaysInThisMonth() - new_date.d)
@@ -62,12 +77,14 @@ class Date:
             smaller_day, bigger_day = [self, other] if self < other else [other, self]
             if self.y == other.y:
                 return bigger_day.numberOfDaysFromYearStart() - smaller_day.numberOfDaysFromYearStart()
-            days_remaining_in_the_year_of_smaller_day = smaller_day.numberOfDaysRemainingInThisYear()
-            days_from_year_start_bigger_day = bigger_day.numberOfDaysFromYearStart()
             days_between_years = sum([Date(1, 1, i).numberOfDaysInThisYear() for i in range(smaller_day.y+1, bigger_day.y)])
-            return days_remaining_in_the_year_of_smaller_day + days_between_years + days_from_year_start_bigger_day
+            return (
+                smaller_day.numberOfDaysRemainingInThisYear() +
+                days_between_years +
+                bigger_day.numberOfDaysFromYearStart()
+            )
         else:
-            return TypeError
+            raise TypeError
 
     def isLeapYear(self) -> bool:
         year = self.y
@@ -91,20 +108,26 @@ class Date:
         return self.y
 
     def setDay(self, day: int) :
+        if not isinstance(day, int):
+            raise TypeError
         if 0 < day <= self.maxDaysInThisMonth():
             self.d = day
         else:
             print("Invalid Day :", day)
-            return RuntimeError
+            raise RuntimeError
 
     def setMonth(self, month: int):
+        if not isinstance(month, int):
+            raise TypeError
         if 0 < month <= 12:
             self.m = month
         else:
             print("Invalid Month :", month)
-            return RuntimeError
+            raise RuntimeError
 
     def setYear(self, year: int) -> None:
+        if not isinstance(year, int):
+            raise TypeError
         self.y = year
 
     def setMonthDays(self):
