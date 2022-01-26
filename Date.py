@@ -5,6 +5,7 @@ class Date:
     d: int = 0
     m: int = 0
     y: int = 0
+
     def __init__(self, day: int, month: int, year: int):
         self.month_days = None
         self.setYear(year)
@@ -20,12 +21,12 @@ class Date:
 
     def __eq__(self, other) -> bool:
         if not isinstance(other, Date):
-            raise TypeError
+            raise TypeError(f'Expected argument of type {type(self)} but got {type(other)}')
         return self.d == other.d and self.m == other.m and self.y == other.y
 
     def __gt__(self, other) -> bool:
         if not isinstance(other, Date):
-            raise TypeError
+            raise TypeError(f'Expected argument of type {type(self)} but got {type(other)}')
         if self.y > other.y:
             return True
         elif self.y == other.y:
@@ -38,22 +39,22 @@ class Date:
 
     def __ge__(self, other) -> bool:
         if not isinstance(other, Date):
-            raise TypeError
+            raise TypeError(f'Expected argument of type {type(self)} but got {type(other)}')
         return self > other or self == other
 
     def __lt__(self, other) -> bool:
         if not isinstance(other, Date):
-            raise TypeError
+            raise TypeError(f'Expected argument of type {type(self)} but got {type(other)}')
         return not self >= other
 
     def __le__(self, other) -> bool:
         if not isinstance(other, Date):
-            raise TypeError
+            raise TypeError(f'Expected argument of type {type(self)} but got {type(other)}')
         return self < other or self == other
 
     def __add__(self, days: int):
         if not isinstance(days, int):
-            raise TypeError
+            raise TypeError(f'Expected argument of type {type(1)} but got {type(days)}')
         new_date = copy(self)
         while new_date.d + days > new_date.maxDaysInThisMonth():
             days -= (new_date.maxDaysInThisMonth() - new_date.d)
@@ -77,14 +78,15 @@ class Date:
             smaller_day, bigger_day = [self, other] if self < other else [other, self]
             if self.y == other.y:
                 return bigger_day.numberOfDaysFromYearStart() - smaller_day.numberOfDaysFromYearStart()
-            days_between_years = sum([Date(1, 1, i).numberOfDaysInThisYear() for i in range(smaller_day.y+1, bigger_day.y)])
+            days_between_years = sum(
+                [Date(1, 1, i).numberOfDaysInThisYear() for i in range(smaller_day.y + 1, bigger_day.y)])
             return (
-                smaller_day.numberOfDaysRemainingInThisYear() +
-                days_between_years +
-                bigger_day.numberOfDaysFromYearStart()
-            )
+                    smaller_day.numberOfDaysRemainingInThisYear() +
+                    days_between_years +
+                    bigger_day.numberOfDaysFromYearStart()
+                )
         else:
-            raise TypeError
+            raise TypeError(f'Expected argument of type {type(self)} or {type(1)} but got {type(other)}')
 
     def isLeapYear(self) -> bool:
         year = self.y
@@ -107,27 +109,23 @@ class Date:
     def getYear(self) -> int:
         return self.y
 
-    def setDay(self, day: int) :
+    def setDay(self, day: int):
         if not isinstance(day, int):
-            raise TypeError
-        if 0 < day <= self.maxDaysInThisMonth():
-            self.d = day
-        else:
-            print("Invalid Day :", day)
-            raise RuntimeError
+            raise TypeError(f'Expected argument of type {type(1)} but got {type(day)}')
+        if not 1 <= day <= self.maxDaysInThisMonth():
+            raise AttributeError(f'Argument "day" is out of the expected range {1} to {self.maxDaysInThisMonth()}.')
+        self.d = day
 
     def setMonth(self, month: int):
         if not isinstance(month, int):
-            raise TypeError
-        if 0 < month <= 12:
-            self.m = month
-        else:
-            print("Invalid Month :", month)
-            raise RuntimeError
+            raise TypeError(f'Expected argument of type {type(1)} but got {type(month)}')
+        if not 1 <= month <= 12:
+            raise AttributeError(f'Argument "month" is out of the expected range 1 to 12.')
+        self.m = month
 
     def setYear(self, year: int) -> None:
         if not isinstance(year, int):
-            raise TypeError
+            raise TypeError(f'Expected argument of type {type(1)} but got {type(year)}')
         self.y = year
 
     def setMonthDays(self):
@@ -142,7 +140,7 @@ class Date:
         return Date(1, 1, self.y)
 
     def numberOfDaysFromYearStart(self) -> int:
-        return sum(self.month_days[:self.m-1]) + self.d
+        return sum(self.month_days[:self.m - 1]) + self.d
 
     def numberOfDaysInThisYear(self):
         return 366 if self.isLeapYear() else 365
