@@ -7,17 +7,38 @@ class Time:
         self.set_minute(m)
 
     def set_hour(self, h):
-        if h < 0 or h > 24:
-            raise RuntimeError
+        if not 0 <= h < 24:
+            raise AttributeError('Argument "h" is out of the expected range 0 to 23')
         self.hour = int(h)
 
     def set_minute(self, m):
-        if m < 0 or m > 60:
-            raise RuntimeError
+        if not 0 <= m < 60:
+            raise AttributeError('Argument "m" is out of the expected range 0 to 59')
         self.minute = int(m)
 
     def __str__(self):
         return f'{str(self.hour).rjust(2, "0")}:{str(self.minute).rjust(2, "0")}'
+
+    def __eq__(self, other):
+        return self.hour == other.hour and self.minute == other.minute
+
+    def __lt__(self, other):
+        if not isinstance(other, Time):
+            raise TypeError(f'Expected argument of type {type(Time)} but got {type(other)}')
+        if self.hour > other.hour:
+            return False
+        if self.hour == other.hour:
+            return self.minute < other.minute
+        return True
+
+    def __le__(self, other):
+        return self == other or self < other
+
+    def __gt__(self, other):
+        return not self <= other
+
+    def __ge__(self, other):
+        return not self < other
 
     def __sub__(self, other):
         if not isinstance(other, Time):
