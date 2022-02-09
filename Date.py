@@ -19,12 +19,12 @@ class Date:
         y = str(self.y).rjust(4, '0')
         return f'{d}-{m}-{y}'
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: 'Date') -> bool:
         if not isinstance(other, Date):
             raise TypeError(f'Expected argument of type {type(self)} but got {type(other)}')
         return self.d == other.d and self.m == other.m and self.y == other.y
 
-    def __gt__(self, other) -> bool:
+    def __gt__(self, other: 'Date') -> bool:
         if not isinstance(other, Date):
             raise TypeError(f'Expected argument of type {type(self)} but got {type(other)}')
         if self.y > other.y:
@@ -37,17 +37,17 @@ class Date:
                     return True
         return False
 
-    def __ge__(self, other) -> bool:
+    def __ge__(self, other: 'Date') -> bool:
         if not isinstance(other, Date):
             raise TypeError(f'Expected argument of type {type(self)} but got {type(other)}')
         return self > other or self == other
 
-    def __lt__(self, other) -> bool:
+    def __lt__(self, other: 'Date') -> bool:
         if not isinstance(other, Date):
             raise TypeError(f'Expected argument of type {type(self)} but got {type(other)}')
         return not self >= other
 
-    def __le__(self, other) -> bool:
+    def __le__(self, other: 'Date') -> bool:
         if not isinstance(other, Date):
             raise TypeError(f'Expected argument of type {type(self)} but got {type(other)}')
         return self < other or self == other
@@ -64,7 +64,7 @@ class Date:
         new_date.d += days
         return new_date
 
-    def __sub__(self, other):
+    def __sub__(self, other: 'Date'):
         if isinstance(other, int):
             new_date = copy(self)
             while new_date.d - other < 1:

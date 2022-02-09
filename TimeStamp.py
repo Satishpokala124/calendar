@@ -10,12 +10,12 @@ class TimeStamp:
         self.set_date(date)
         self.set_time(time)
 
-    def set_date(self, date):
+    def set_date(self, date: Date):
         if not isinstance(date, Date):
             return TypeError
         self.date = date
 
-    def set_time(self, time):
+    def set_time(self, time: Time):
         if not isinstance(time, Time):
             raise TypeError
         self.time = time
@@ -23,12 +23,12 @@ class TimeStamp:
     def __str__(self):
         return f'{self.date}T{self.time}'
 
-    def __eq__(self, other):
+    def __eq__(self, other: 'TimeStamp'):
         if not isinstance(other, TimeStamp):
             raise TypeError
         return self.date == other.date and self.time == other.time
 
-    def __lt__(self, other) -> bool:
+    def __lt__(self, other: 'TimeStamp') -> bool:
         if not isinstance(other, TimeStamp):
             raise TypeError
         if self.date > other.date:
@@ -37,11 +37,11 @@ class TimeStamp:
             return False if self.time >= other.time else True
         return True
 
-    def __le__(self, other):
+    def __le__(self, other: 'TimeStamp'):
         return self < other or self == other
 
-    def __gt__(self, other):
+    def __gt__(self, other: 'TimeStamp'):
         return not self <= other
 
-    def __ge__(self, other):
+    def __ge__(self, other: 'TimeStamp'):
         return not self < other

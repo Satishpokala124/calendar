@@ -3,8 +3,8 @@ from Time import Time
 
 
 class Event:
-    start_timestamp = None
-    end_timestamp = None
+    start_timestamp: TimeStamp = None
+    end_timestamp: TimeStamp = None
 
     def __init__(self, start_timestamp: TimeStamp, end_timestamp: TimeStamp) -> None:
         self.set_start_timestamp(start_timestamp)
@@ -15,12 +15,12 @@ class Event:
         if self.start_timestamp < self.end_timestamp:
             raise AttributeError('start_timestamp is expected to be before end_timestamp')
 
-    def set_start_timestamp(self, start_timestamp) -> None:
+    def set_start_timestamp(self, start_timestamp: TimeStamp) -> None:
         if not isinstance(start_timestamp, TimeStamp):
             raise TypeError(f'Expected start_timestamp of type {type(TimeStamp)} but got {type(self.start_timestamp)}')
         self.start_timestamp = start_timestamp
 
-    def set_end_timestamp(self, end_timestamp) -> None:
+    def set_end_timestamp(self, end_timestamp: TimeStamp) -> None:
         if not isinstance(end_timestamp, TimeStamp):
             raise TypeError(f'Expected end_timestamp of type {type(TimeStamp)} but got {type(self.end_timestamp)}')
         self.end_timestamp = end_timestamp
