@@ -48,6 +48,9 @@ class Time:
             small_ts, big_ts = [self, other] if self < other else [other, self]
             hr_diff = big_ts.hour - small_ts.hour
             min_diff = big_ts.minute - small_ts.minute
+            if min_diff < 0:
+                min_diff += 60
+                hr_diff -=1
             return hr_diff + (min_diff / 60)
         elif isinstance(other, int):
             new_time = copy(self)
@@ -62,8 +65,6 @@ class Time:
     def __add__(self, minutes: int) -> 'Time':
         if not isinstance(minutes, int):
             raise TypeError(f'Expected argument of type {type(int)} but got {type(minutes)}')
-        if self.minute + minutes < 60:
-            return Time(self.hour, self.minute + minutes)
         new_time = copy(self)
         while new_time.minute + minutes >= 60:
             new_time.hour = new_time.hour + 1 if new_time.hour < 23 else 0
