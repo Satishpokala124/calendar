@@ -50,7 +50,7 @@ class Time:
             min_diff = big_ts.minute - small_ts.minute
             if min_diff < 0:
                 min_diff += 60
-                hr_diff -=1
+                hr_diff -= 1
             return hr_diff + (min_diff / 60)
         elif isinstance(other, int):
             new_time = copy(self)

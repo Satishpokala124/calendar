@@ -28,9 +28,10 @@ class Calendar:
         for i, ith_event in enumerate(self.events):
             if event.start_timestamp <= ith_event.start_timestamp:
                 self.events.insert(i, event)
-                break
+                return
+        self.events.append(event)
 
-    def mark_event_as_done(self):
+    def mark_event_as_done(self, event):
         pass
 
     def schedule_meeting(self, other: 'Calendar', date: Date, duration: int) -> Event or int:
@@ -48,21 +49,22 @@ class Calendar:
             is_cal1_free = True
             is_cal2_free = True
             for event in events1:
-                if event.start_timestamp.time < time < event.end_timestamp.time:
+                if event.start_timestamp.time <= time < event.end_timestamp.time:
                     is_cal1_free = False
                     break
             for event in events2:
-                if event.start_timestamp.time < time < event.end_timestamp.time:
+                if event.start_timestamp.time <= time < event.end_timestamp.time:
                     is_cal2_free = False
                     break
-            if is_cal1_free and is_cal2_free:
-                empty_slot += 15
-            else:
-                empty_slot = 0
 
             if duration <= empty_slot:
                 start_timestamp = TimeStamp(date, time - duration)
                 end_timestamp = TimeStamp(date, time)
                 scheduled_event = Event(start_timestamp, end_timestamp)
-                return Event
+                return scheduled_event
+
+            if is_cal1_free and is_cal2_free:
+                empty_slot += 15
+            else:
+                empty_slot = 0
         return -1
