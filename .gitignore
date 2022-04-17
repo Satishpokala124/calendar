@@ -1,2 +1,2 @@
-.idea/
-Pipfile.lock
+*/.idea/
+*/Pipfile.lock
