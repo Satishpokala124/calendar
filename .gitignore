@@ -1,4 +1,5 @@
-*/.idea/
-*/Pipfile.lock
-*/migrations/
+**/.idea/
+**/Pipfile.lock
+**/migrations/
+**/__pycache__/
 *.backup
