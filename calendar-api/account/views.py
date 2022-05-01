@@ -70,7 +70,7 @@ def register(request):
 
     user = User.objects.create_user(
         username=username,
-        firs_tname=firstname,
+        first_name=firstname,
         last_name=lastname,
         email=email,
         password=password
