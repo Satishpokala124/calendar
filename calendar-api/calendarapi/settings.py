@@ -42,8 +42,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -128,4 +128,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Changing the inbuilt User model to custom User model in account application
 AUTH_USER_MODEL = 'account.User'
+
+# Enabling csrf token verification in sessions
+CSRF_USE_SESSIONS = True

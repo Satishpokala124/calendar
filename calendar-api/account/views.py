@@ -18,9 +18,11 @@ def test(request):
 
 @api_view(['POST'])
 def user_login(request):
+    if request.user.is_authenticated:
+        return Response({'error': f'{request.user.username} is already logged in'}, status=status.HTTP_403_FORBIDDEN)
     try:
-        username_or_email = request.data['username']
-        password = request.data['password']
+        username_or_email = request.data['username'].strip().lower()
+        password = request.data['password'].strip()
     except KeyError:
         return Response({'error': 'Bad request, some required fields are missing.'}, status=status.HTTP_400_BAD_REQUEST)
     users = User.objects.filter(
@@ -40,12 +42,17 @@ def user_login(request):
 
 @api_view(['POST'])
 def register(request):
-    username = request.data['username']
-    firstname = request.data['firstname']
-    lastname = request.data['lastname']
-    email = request.data['email']
-    password = request.data['password']
-    cnf_password = request.data['cnf_password']
+    if request.user.is_authenticated:
+        return Response({'error': f'{request.user.username} is already logged in'}, status=status.HTTP_403_FORBIDDEN)
+    try:
+        username = request.data['username'].strip().lower()
+        firstname = request.data['firstname'].strip()
+        lastname = request.data['lastname'].strip()
+        email = request.data['email'].strip().lower()
+        password = request.data['password'].strip()
+        cnf_password = request.data['cnf_password'].strip()
+    except KeyError:
+        return Response({'error': 'Bad request, some required fields are missing.'}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         User.username_validator(username)
@@ -62,7 +69,7 @@ def register(request):
         return Response({'error': 'Username already taken'}, status=status.HTTP_400_BAD_REQUEST)
 
     is_existing_email = len(User.objects.filter(email=email)) > 0
-    if is_existing_username:
+    if is_existing_email:
         return Response({'error': 'Email already exists'}, status=status.HTTP_400_BAD_REQUEST)
 
     if password != cnf_password:
