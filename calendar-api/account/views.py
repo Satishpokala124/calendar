@@ -82,7 +82,6 @@ def register(request):
         email=email,
         password=password
     )
-    user.save()
     auth.login(request, user)
     return Response({'message': 'User created'}, status=status.HTTP_201_CREATED)
 
