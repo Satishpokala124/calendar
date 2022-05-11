@@ -59,7 +59,7 @@ class Date:
         while new_date.d + days > new_date.max_days_in_this_month():
             days -= (new_date.max_days_in_this_month() - new_date.d)
             new_date.d = 0
-            new_date.m = new_date.get_next_month()
+            new_date.m = new_date.next_month()
             new_date.y += 1 if new_date.m == 1 else 0
         new_date.d += days
         return new_date
@@ -103,7 +103,7 @@ class Date:
     def get_month(self) -> int:
         return self.m
 
-    def get_next_month(self) -> int:
+    def next_month(self) -> int:
         return self.m + 1 if self.m < 12 else 1
 
     def get_year(self) -> int:
