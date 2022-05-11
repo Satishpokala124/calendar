@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'account.apps.AccountConfig',
-    'calendars.apps.CalendarsConfig'
+    'calendars.apps.CalendarsConfig',
+    'commons.apps.CommonsConfig'
 ]
 
 MIDDLEWARE = [
