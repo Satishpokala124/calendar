@@ -56,6 +56,8 @@ class Date:
         if not isinstance(days, int):
             raise TypeError(f'Expected argument of type {type(1)} but got {type(days)}')
         new_date = copy(self)
+        if days < 0:
+            return new_date - abs(days)
         while new_date.d + days > new_date.max_days_in_this_month():
             days -= (new_date.max_days_in_this_month() - new_date.d)
             new_date.d = 0
@@ -64,9 +66,11 @@ class Date:
         new_date.d += days
         return new_date
 
-    def __sub__(self, other: 'Date'):
+    def __sub__(self, other: 'Date' or int):
         if isinstance(other, int):
             new_date = copy(self)
+            if other < 0:
+                return new_date + abs(other)
             while new_date.d - other < 1:
                 other -= new_date.d
                 new_date.m = new_date.previous_month()
@@ -84,7 +88,7 @@ class Date:
                     smaller_day.days_remaining_in_this_year() +
                     days_between_years +
                     bigger_day.days_from_year_start()
-                )
+            )
         else:
             raise TypeError(f'Expected argument of type {type(self)} or {type(1)} but got {type(other)}')
 
@@ -147,3 +151,11 @@ class Date:
 
     def days_remaining_in_this_year(self):
         return self.days_in_this_year() - self.days_from_year_start()
+
+
+if __name__ == '__main__':
+    d = Date(1, 2, 2000)
+    days = -2
+    print(d - days)
+    print(d + days)
+    d - (-1)
