@@ -135,3 +135,10 @@ AUTH_USER_MODEL = 'account.User'
 
 # Enabling csrf token verification in sessions
 CSRF_USE_SESSIONS = True
+
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.SessionAuthentication",
+    ),
+}
