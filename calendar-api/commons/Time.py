@@ -54,6 +54,8 @@ class Time:
             return hr_diff + (min_diff / 60)
         elif isinstance(other, int):
             new_time = copy(self)
+            if other < 0:
+                return new_time + abs(other)
             while new_time.minute < other:
                 other -= new_time.minute
                 new_time.minute = 60
@@ -66,6 +68,8 @@ class Time:
         if not isinstance(minutes, int):
             raise TypeError(f'Expected argument of type {type(int)} but got {type(minutes)}')
         new_time = copy(self)
+        if minutes < 0:
+            return new_time - abs(minutes)
         while new_time.minute + minutes >= 60:
             new_time.hour = new_time.hour + 1 if new_time.hour < 23 else 0
             minutes -= 60
