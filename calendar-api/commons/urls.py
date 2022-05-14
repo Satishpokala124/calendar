@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from commons import views, date_views, time_views, timestamp_views
+from commons.core.views import timestamp_views, time_views, date_views
 
 date_urlpatterns = [
     path('tostring/', date_views.to_string, name='date_tostring'),

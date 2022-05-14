@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from commons.Time import Time
+from commons.core.Time import Time
 
 
 @api_view(['POST'])

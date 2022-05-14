@@ -1,5 +1,5 @@
-from commons.Date import Date
-from commons.Time import Time
+from commons.core.Date import Date
+from commons.core.Time import Time
 
 
 class TimeStamp:
