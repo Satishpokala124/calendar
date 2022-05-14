@@ -1,8 +1,6 @@
 from django.urls import path, include
 
-from commons import views
-from commons import date_views
-from commons import time_views
+from commons import views, date_views, time_views, timestamp_views
 
 date_urlpatterns = [
     path('tostring/', date_views.to_string, name='date_tostring'),
@@ -21,12 +19,13 @@ date_urlpatterns = [
 time_urlpatterns = [
     path('tostring/', time_views.to_string, name='time_tostring'),
     path('compare/', time_views.compare, name='time_compare'),
-    path('add_days/', time_views.add_minutes, name='time_add_minutes'),
+    path('add_minutes/', time_views.add_minutes, name='time_add_minutes'),
     path('diff/', time_views.diff, name='time_diff'),
 ]
 
 timestamp_urlpatterns = [
-
+    path('tostring/', timestamp_views.to_string, name='timestamp_tostring'),
+    path('compare/', timestamp_views.compare, name='timestamp_compare'),
 ]
 
 urlpatterns = [
