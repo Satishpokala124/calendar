@@ -151,3 +151,12 @@ class Date:
 
     def days_remaining_in_this_year(self):
         return self.days_in_this_year() - self.days_from_year_start()
+
+    @staticmethod
+    def make(date: str) -> 'Date':
+        if not isinstance(date, str):
+            raise TypeError(f'Expected argument of type {type(str)} but got {type(date)}')
+        if len(date) != 10:
+            raise AttributeError('Malformed argument "date"')
+        day, month, year = map(int, date.split('-'))
+        return Date(day, month, year)

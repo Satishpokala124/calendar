@@ -75,3 +75,12 @@ class Time:
             minutes -= 60
         new_time.minute += minutes
         return new_time
+
+    @staticmethod
+    def make(time: str) -> 'Time':
+        if not isinstance(time, str):
+            raise TypeError(f'Expected argument of type {type(str)} but got {type(time)}')
+        if len(time) != 5:
+            raise AttributeError('Malformed argument "time"')
+        hour, minute = map(int, time.split(':'))
+        return Time(hour, minute)

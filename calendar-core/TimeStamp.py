@@ -45,3 +45,15 @@ class TimeStamp:
 
     def __ge__(self, other: 'TimeStamp'):
         return not self < other
+
+    @staticmethod
+    def make(timestamp: str) -> 'TimeStamp':
+        if not isinstance(timestamp, str):
+            raise TypeError(f'Expected argument of type {type(str)} but got {type(timestamp)}')
+        if len(timestamp) != 16:
+            raise AttributeError('Malformed argument "timestamp"')
+        date, time = timestamp.split('T')
+        date = Date.make(date)
+        time = Time.make(time)
+        return TimeStamp(date, time)
+
