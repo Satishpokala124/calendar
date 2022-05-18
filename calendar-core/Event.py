@@ -12,7 +12,7 @@ class Event:
         self.validate()
 
     def validate(self):
-        if self.start_timestamp < self.end_timestamp:
+        if not self.start_timestamp < self.end_timestamp:
             raise AttributeError('start_timestamp is expected to be before end_timestamp')
 
     def set_start_timestamp(self, start_timestamp: TimeStamp) -> None:
