@@ -17,7 +17,7 @@ class Date:
         d = str(self.d).rjust(2, '0')
         m = str(self.m).rjust(2, '0')
         y = str(self.y).rjust(4, '0')
-        return f'{d}-{m}-{y}'
+        return f'{y}-{m}-{d}'
 
     def __eq__(self, other: 'Date') -> bool:
         if not isinstance(other, Date):
@@ -158,7 +158,7 @@ class Date:
             raise TypeError(f'Expected argument of type {type(str)} but got {type(date)}')
         if len(date) != 10:
             raise AttributeError('Malformed argument "date"')
-        day, month, year = map(int, date.split('-'))
+        year, month, day = map(int, date.split('-'))
         return Date(day, month, year)
 
 
